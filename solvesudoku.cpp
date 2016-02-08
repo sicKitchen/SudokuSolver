@@ -20,8 +20,8 @@ int main(int argc, char *argv[]) {
     //string puzzle = argv[1];
     cin >> puzzle;
     
-    int puzzleLength = puzzle.length();
-    std::cout << puzzleLength << "\n";
+    //int puzzleLength = puzzle.length();
+    //std::cout << puzzleLength << "\n";
     if (puzzle.length() != 9*9 || !all_of(puzzle.begin(), puzzle.end(),[](char ch) {
         return ch == '.' || ('1' <= ch && ch <= '9');
     })) {

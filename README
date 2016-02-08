@@ -1,6 +1,6 @@
 Sudoku Solver
-Name: 
-Email: 
+Name: Spencer Kitchen
+Email: spencer.kitchen@wsu.edu
 4/15/2015 (wcochran@wsu.edu) ...... initial creation date
 
 Description:
@@ -59,7 +59,7 @@ SudokuGrid.h ......... SudokuGrid class definition
 simple.txt ........... Some "simple" sudoku puzzles
 hard.txt ............. Some "hard" sudoku puzzles
 solve.pl ............. inputs a battery of puzzles at solver
-solvesudoku.cpp ...... solver source cide
+solvesudoku.cpp ...... solver source code
 sudokucheck.pl........ verifies and checks solution   
 testpuzzles.txt ...... Test puzzles used in CI
 .gitlab-ci.yml ....... CI test specification for GitLab
