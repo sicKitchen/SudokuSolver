@@ -40,7 +40,10 @@ void prettyPrint(SudokuGrid board){
     for (int i = 0; i<9; i++) {
         for (int j=0; j<9; j++) {
             if (j<9) {
-                std::cout <<board.number(i, j)<<" ";
+                if (board.number(i, j) == 0) {
+                    std::cout <<". ";
+                } else
+                    std::cout <<board.number(i, j)<<" ";
             }
             if (j==2 || j==5 ) {
                 std::cout <<"| ";
