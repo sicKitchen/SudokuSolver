@@ -27,9 +27,8 @@ int main(int argc, char *argv[]) {
     }
     SudokuGrid board = SudokuGrid(puzzle);      // make board
     prettyPrint(board);                         // print board
-    
     board.solveSudoku(board);                   // solve for board
-    //std::cout<<"//----------------------\n\n";
+    std::cout<<"\n";
     prettyPrint(board);
     
     return 0;
