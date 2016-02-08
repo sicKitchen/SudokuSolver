@@ -1,5 +1,5 @@
 //
-//  main.cpp
+//  solvessudoku.cpp
 //  SudokuSolver
 //
 //  Created by Spencer Kitchen on 2/5/16.
@@ -12,43 +12,31 @@
 
 using namespace std;
 void prettyPrint(SudokuGrid board);
-//-------------------------------------------------------
-// XXX
 //=======================================================
 int main(int argc, char *argv[]) {
     string puzzle;
-    //string puzzle = argv[1];
+    //string puzzle = argv[1];                    // for xcode
     cin >> puzzle;
     
-    //int puzzleLength = puzzle.length();
-    //std::cout << puzzleLength << "\n";
+    // provided by assignment
     if (puzzle.length() != 9*9 || !all_of(puzzle.begin(), puzzle.end(),[](char ch) {
         return ch == '.' || ('1' <= ch && ch <= '9');
     })) {
         cerr << "bogus puzzle!" << endl;
         exit(1);
     }
-    //for (int i =  0; i<puzzleLength; i++) {
-    //    std::cout << puzzle[i];
-    //}
-    //std::cout << "\n";
+    SudokuGrid board = SudokuGrid(puzzle);      // make board
+    prettyPrint(board);                         // print board
     
-    // XXX
-    SudokuGrid board = SudokuGrid(puzzle);
-    prettyPrint(board);
-    
-    //board.setPencil(0, 0, 5);
-    
-    
-    //board.autoPencil(board);
-    board.solveSudoku(board);
+    board.solveSudoku(board);                   // solve for board
     //std::cout<<"//----------------------\n\n";
     prettyPrint(board);
     
     return 0;
 }
-
 //=============================================================
+// prints out the board in a sudoku format
+//
 void prettyPrint(SudokuGrid board){
     for (int i = 0; i<9; i++) {
         for (int j=0; j<9; j++) {
@@ -64,17 +52,7 @@ void prettyPrint(SudokuGrid board){
             std::cout <<"------+-------+------\n";
         }
     }
-    
-    
 }
 //----------------------------------------------------
-
-
-
-
-
-
-
-
 
 

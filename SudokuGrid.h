@@ -12,39 +12,40 @@
 #include <array>
 #include <bitset>
 #include <string>
-#include <iostream>
-#include <cmath>
-
-using namespace std;
+#include <cmath>    // floor()
+// For debugging, needed for print statements
+//#include <iostream>
+//using namespace std;
 
 class SudokuGrid {
 private:
     // private class instance vars go here
+    // Holds one cell of sudoku board
     struct Cell {
-        int number;
-        bool solved;
-        bool fixed;
+        int number;             // holds value, 0 = .
+        bool solved;            // if solved
+        bool fixed;             // if initial input
         std::bitset<9> pencils; // pencils 1-9, bits 0-8
         
     };
-    std::array<std::array<Cell, 9>, 9> board;
+    std::array<std::array<Cell, 9>, 9> board;   // Gameboard
     
 public:
     // implement the following
-    
+    // constructor
     SudokuGrid(std::string s) {
         int k = 0;
         struct Cell cell;
         for (int i = 0; i<9; i++) {
             for (int j = 0; j<9; j++) {
                 if (s[k] == '.') {
-                    cell.number = 0;
+                    cell.number = 0;            // . = 0
                     cell.solved = false;
                     cell.fixed  = false;
                     board[i][j] = cell;
                     k++;
                 } else {
-                    cell.number = s[k]-'0';     // converts to int
+                    cell.number = s[k]-'0';     // converts to int, ascii math
                     cell.solved = false;
                     cell.fixed = true;
                     board[i][j] = cell;
@@ -52,8 +53,7 @@ public:
                 }
             }
         }
-        
-    } // constructor
+    }
     
     int number(int row, int col) const {
         Cell returnNumber = board[row][col];
@@ -69,25 +69,21 @@ public:
     bool isFixed(int row, int col) const {
         Cell returnFixed = board[row][col];
         return returnFixed.fixed;
-        
     }
     
     bool isSolved(int row, int col) const {
         Cell returnSolved = board[row][col];
         return returnSolved.solved;
-        
     }
+    
     void setSolved(int row, int col) {
         board[row][col].solved = true;
-        
     }
     
     bool isPencilSet(int row, int col, int n) const {
         if (board[row][col].pencils[n-1] == 1) {
             return true;
         } else return false;
-        
-        
     }
     
     bool anyPencilsSet(int row, int col) const {
@@ -102,26 +98,23 @@ public:
     
     void setPencil(int row, int col, int n) {
         board[row][col].pencils[n-1] = 1;
-        std::cout<<board[row][col].pencils<<"\n";
+        //std::cout<<board[row][col].pencils<<"\n";
     }
     
     void setAllPencils(int row, int col) {
-        board[row][col].pencils = 0x1FF;
-        std::cout<<board[row][col].pencils<<"\n";
-        
+        board[row][col].pencils = 0x1FF;            // pencils = 11111111
+        //std::cout<<board[row][col].pencils<<"\n";
     }
     void clearPencil(int row, int col, int n) {
         board[row][col].pencils[n-1] = 0;
-        std::cout<<board[row][col].pencils<<"\n";
-        
+        //std::cout<<board[row][col].pencils<<"\n";
     }
     void clearAllPencils(int row, int col) {
-        board[row][col].pencils = 0x0;
-        std::cout<<board[row][col].pencils<<"\n";
-        
-        
+        board[row][col].pencils = 0x0;              // pencils = 00000000
+        //std::cout<<board[row][col].pencils<<"\n";
     }
     //---------------------------------------------------
+    // provided by assignment
     void autoPencil(SudokuGrid& grind) {
         for (int r = 0; r<9; r++) {
             for (int c= 0; c<9; c++) {
@@ -137,8 +130,12 @@ public:
         }
     }
     //----------------------------------------------------
+    // Checks if there are any conflicting number in row, col,
+    //  and small square. Returns TRUE if there is a conflict
+    //   and FALSE is the number is safe to insert
+    //
     bool conflictingNumber(SudokuGrid grid, int row, int col, int number) {
-        bool conflict = false;
+        bool conflict = false;  // assume no conflict
         
         // test horizontal
         for (int j = 0; j<9; j++) {
@@ -160,28 +157,30 @@ public:
         
         // test square
         float r, c;
+        /*  row / 3 returns x.00, x.33, x.66. Floor of return will
+         always be 0, 1, 2. Multiply by 3 and they turn into
+         0, 3, 6 respectivly. Now its equal to start point
+         of each small square.*/
         r = (std::floor(row / 3))*3;
         c = (std::floor(col / 3))*3;
         //std::cout<<"row: "<<r<<" col: "<<c<<"\n";
         
+        // r is start of small square, r+3 is end of small square
         for (int i = r; i<r+3; i++) {
             for (int j = c; j<c+3; j++) {
                 int num = grid.number(i,j);
                 //std::cout<<"num: "<<num<<"\n";
                 if (num == number) {
-                    conflict = true;
+                    conflict = true;       // have conflict
                 }
             }
         }
         return conflict;
     }
     //------------------------------------------------------
-    
+    // provided by assignment
     bool  solveSudoku(SudokuGrid& grid) {
         int row, col;
-        
-        
-        
         if (!findUnassignedLocation(grid, row, col)) {
             return true; // puzzle filled, solution found!
         }
@@ -194,11 +193,7 @@ public:
                 grid.setNumber(row, col, 0);   // not solved, clear number
             }
         return false;
-        
-        
     }
-    
-    
     //--------------------------------------------------------
     bool  findUnassignedLocation(SudokuGrid& grid, int &row, int &col){
         for (row = 0; row<9; row++) {
@@ -212,7 +207,7 @@ public:
     }
     
     //---------------------------------------------------------
-    /*
+    /* STILL WORKING ON GETTING THIS WORKING. AUTOPENCILE IS WORKING
      void deduce(SudokuGrid& grid) {
      bool changed;
      do { // repeat until no changes made
@@ -248,14 +243,6 @@ public:
     
     
     
-    
-    
-    
-    
-    
-    
-    
 };
 
 #endif // SUDOKUGRID_H
-
