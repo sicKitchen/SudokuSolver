@@ -14,7 +14,7 @@
 #include <string>
 #include <cmath>    // floor()
 // For debugging, needed for print statements
-//#include <iostream>
+#include <iostream>
 //using namespace std;
 
 class SudokuGrid {
@@ -145,7 +145,6 @@ public:
                 conflict = true;
             }
         }
-        
         // test virtical
         for (int i = 0; i<9; i++) {
             int num= grid.number(i, col);
@@ -154,7 +153,6 @@ public:
                 conflict = true;
             }
         }
-        
         // test square
         float r, c;
         /*  row / 3 returns x.00, x.33, x.66. Floor of return will
@@ -205,44 +203,72 @@ public:
         }
         return false;
     }
-    
     //---------------------------------------------------------
-    /* STILL WORKING ON GETTING THIS WORKING. AUTOPENCILE IS WORKING
-     void deduce(SudokuGrid& grid) {
-     bool changed;
-     do { // repeat until no changes made
-     autoPencil(grid);
-     changed = false;
-     for (int row = 0; row < 9; row++)
-     for (int col = 0; col < 9; col++)
-     for (int n = 1; n <= 9; n++)
-     if (grid.isPencilSet(row, col, n) &&
-     (numPencilsInRow(grid, row, n) == 1 ||
-     numPencilsInColumn(grid, col, n) == 1 ||
-     numPencilsInBlock(grid, row, col, n) == 1)) {
-     grid.clearAllPencils(row, col);
-     grid.setNumber(row,col,n);
-     grid.setSolved(row,col);
-     autopencil(grid);
-     changed = true;
-     break;
-     }
-     } while(changed);
-     }
-     
-     //----------------------------------------------------
-     int numPencilsInRow(SudokuGrid& grid, int row, int n){
-     int count;
-     for (int i = 0; i<9; i++) {
-     if(grid[row][i].pencils[i] ==1) {
-     
-     }
-     }
-     }
-     */
-    
-    
-    
+    // Provided by assignment
+    void deduce(SudokuGrid& grid) {
+        bool changed;
+        do { // repeat until no changes made
+            autoPencil(grid);
+            changed = false;
+            for (int row = 0; row < 9; row++)
+                for (int col = 0; col < 9; col++)
+                    for (int n = 1; n <= 9; n++)
+                        if (grid.isPencilSet(row, col, n) &&
+                            (numPencilsInRow(row, n) == 1 ||
+                             numPencilsInColumn(col, n) == 1 ||
+                             numPencilsInBlock(row, col, n) == 1)) {
+                                grid.clearAllPencils(row, col);
+                                grid.setNumber(row,col,n);
+                                grid.setSolved(row,col);
+                                autoPencil(grid);
+                                changed = true;
+                                break;
+                            }
+        } while(changed);
+    }
+    //----------------------------------------------------
+    int numPencilsInRow(int row, int n){
+        int count =0;
+        int bitPlace = n-1;
+        for (int i = 0; i<9; i++) {
+            if(board[row][i].pencils[bitPlace] ==1) count= count +1;
+        }
+        return count;
+    }
+    //----------------------------------------------------
+    int numPencilsInColumn(int col, int n){
+        int count = 0;
+        int bitPlace = n-1;
+        for (int i = 0; i<9; i++) {
+            if (board[i][col].pencils[bitPlace] ==1) count = count +1;
+        }
+        return count;
+    }
+    //-------------------------------------------------------
+    int numPencilsInBlock( int row, int col, int n){
+        int count =0;
+        int bitPlace=n-1;
+        
+        // test square
+        float r, c;
+        /*  row / 3 returns x.00, x.33, x.66. Floor of return will
+         always be 0, 1, 2. Multiply by 3 and they turn into
+         0, 3, 6 respectivly. Now its equal to start point
+         of each small square.*/
+        r = (std::floor(row / 3))*3;
+        c = (std::floor(col / 3))*3;
+        //std::cout<<"row: "<<r<<" col: "<<c<<"\n";
+        
+        // r is start of small square, r+3 is end of small square
+        for (int i = r; i<r+3; i++) {
+            for (int j = c; j<c+3; j++) {
+                //std::cout<<"num: "<<num<<"\n";
+                if (board[i][j].pencils[bitPlace] ==1) count = count +1;
+            }
+        }
+        return count;
+    }
 };
 
 #endif // SUDOKUGRID_H
+
