@@ -28,14 +28,11 @@ int main(int argc, char *argv[]) {
     SudokuGrid board = SudokuGrid(puzzle);      // make board
     prettyPrint(board);                         // print board
     std::cout<<"\n";
-    
+ 
     board.deduce(board);                        // deduce board
     prettyPrint(board);                         // print deduce
     std::cout<<"\n";
-    
-    board.solveSudoku(board);                   // solve for board
-    std::cout<<"\n";
-    
+   
     if (board.solveSudoku(board) == true) {
         prettyPrint(board);                     // print solved board
     }else
